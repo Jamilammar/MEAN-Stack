@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{{title}}</title>
+    <title>{{#if title}} - {{title}} {{/if}} | My Hotel</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
+  {{#if firstName}}
+  <div class="greeting">
+    <strong>Hi, {{firstName}}!</strong>
+    <a href="/users/logout">Log out</a>
+  </div>
+  {{/if}}
+    <!-- BEGIN page-specific-content -->
     {{{body}}}
+    <!-- End page-specific-content -->
   </body>
 </html>

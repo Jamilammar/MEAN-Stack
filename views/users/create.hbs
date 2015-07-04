@@ -1,0 +1,26 @@
+<form name="create-user-form" id="create-user-form" method="post" novalidate>
+  <div class="form-group">
+    <label for="firstName">First Name</label>
+    <input type="text" id="firstname" name="firstName" placeholder="First Name" required value="{{input.firstName}}">
+  </div>
+  <div class="form-group">
+    <label for="lastname">Last Name</label>
+    <input type="text" id="lastname" name="lastName" placeholder="Last Name" required value="{{input.lastName}}">
+  </div>
+  <div class="form-group">
+    <label for="roomNumber">Room Number</label>
+    <input type="text" id="roomNumber" name="roomNumber" placeholder="Room Number" required value="{{input.roomNumber}}">
+  </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" placeholder="Email" required value="{{input.email}}">
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" autcomplete="off" required>
+  </div>
+  <button type="submit" class="btn btn-default" value="Create my account">Create my Account</button>
+  <span class="alert alert-danger">
+    {{error}}
+  </span>
+</form>
