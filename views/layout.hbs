@@ -1,19 +1,28 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{{#if title}} - {{title}} {{/if}} | My Hotel</title>
+    <title>It is:{{#if title}} - {{title}} {{/if}} | My Hotel</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-  {{#if firstName}}
-  <div class="greeting">
-    <strong>Hi, {{firstName}}!</strong>
-    <a href="/users/logout">Log out</a>
-  </div>
+  Should be the highest
+  {{#if lastName}}
+    <div class="greeting">
+      <strong>Hi, {{lastName}}!</strong>
+      <a href="/users/logout">Log out</a>
+    </div>
   {{/if}}
+  {{#if firstName}}
+    <div class="greeting">
+      <strong>Hi, {{firstName}}!</strong>
+      <a href="/users/logout">Log out</a>
+    </div>
+  {{/if}}
+  Should be on top of page
     <!-- BEGIN page-specific-content -->
     {{{body}}}
     <!-- End page-specific-content -->
+  Should be on bottom of page
   </body>
 </html>

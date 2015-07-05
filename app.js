@@ -4,11 +4,17 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var passport = require('passport');
+var expressSession = require('express-session');
 
 var config = require('./config');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var orders = require('./routes/orders');
+
+var passportConfig = require('./auth/passport-config');
+var restrict = require('./auth/restrict');
+passportConfig(); // execute what was loaded
 
 mongoose.connect(config.mongoUri);
 
@@ -25,8 +31,20 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(expressSession(
+  {
+    secret: 'getting hungry', //used to sign a cookie to prevent tappering
+    saveUninitialized: false, //whether or not we want to create a session if nothing is stored in it
+    resave: false // whether we want to resave a session that hasn't been modified
+  }
+));
+
+app.use(passport.initialize()); //before the routes, to authenticate, BEFORE we give the routes
+app.use(passport.session()); // validates a session
+
 app.use('/', routes);
 app.use('/users', users);
+app.use(restrict); // restrict access to all order routes
 app.use('/orders', orders);
 
 // catch 404 and forward to error handler
