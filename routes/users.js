@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+var config = require('../config');
 var userService = require('../services/user-service');
 
 
@@ -36,20 +37,28 @@ router.post('/create', function(req, res, next) {
     req.login(req.body, function(err){
         res.redirect('/orders');
     });
-
-
   });
 });
 
-router.post('/login', passport.authenticate('local'), function(req, res, next){
-  res.redirect('/orders');
-}); //adding this as another piece of middleware before the normal, req, res, next.
+router.post('/login',
+  function(req, res, next) {
+    req.session.orderId = 12345;
+    if (req.body.rememberMe) {
+        req.session.cookie.maxAge = config.cookieMaxAge;
+      }
+    next(); // it would get stuck here if we didn't call next() here.
+  },
+  passport.authenticate('local', {
+    failureRedirect: '/',
+    successRedirect: '/orders',
+    failureFlash: 'Invalid Credentials'
+}));
 
 router.get('/logout', function(req, res, next){
   req.logout(); // to clear the login session and remove the req.user property
+  req.session.destroy();
   res.redirect('/');
-
-})
+});
 
 
 

@@ -6,7 +6,11 @@ router.get('/', function(req, res, next) {
   if (req.user){
     return res.redirect('/orders');
   }
-  res.render('index', { title: 'Login' });
+  var vm = {
+    title: 'Login',
+    error: req.flash('error')
+  }
+  res.render('index', vm);
 });
 
 module.exports = router;

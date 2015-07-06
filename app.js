@@ -4,13 +4,18 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+
 var passport = require('passport');
 var expressSession = require('express-session');
+var flash = require('connect-flash');
+var connectMongo = require('connect-mongo');
 
 var config = require('./config');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var orders = require('./routes/orders');
+
+var MongoStore = connectMongo(expressSession); //pass in the express session middleware
 
 var passportConfig = require('./auth/passport-config');
 var restrict = require('./auth/restrict');
@@ -35,10 +40,13 @@ app.use(expressSession(
   {
     secret: 'getting hungry', //used to sign a cookie to prevent tappering
     saveUninitialized: false, //whether or not we want to create a session if nothing is stored in it
-    resave: false // whether we want to resave a session that hasn't been modified
+    resave: false, // whether we want to resave a session that hasn't been modified
+    store: new MongoStore({
+      mongooseConnection: mongoose.connection
+    })
   }
 ));
-
+app.use(flash());
 app.use(passport.initialize()); //before the routes, to authenticate, BEFORE we give the routes
 app.use(passport.session()); // validates a session
 
